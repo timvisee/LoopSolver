@@ -3,6 +3,7 @@ package com.timvisee.loopsolver;
 import com.timvisee.loopsolver.frame.GridFrame;
 import com.timvisee.loopsolver.grid.LoopGrid;
 import com.timvisee.loopsolver.tile.LoopTile;
+import com.timvisee.loopsolver.util.WindowUtils;
 
 import java.util.Random;
 
@@ -26,7 +27,14 @@ public class App {
         // Show an initialization message
         System.out.println("Initializing " + LoopSolver.APP_NAME + "...");
 
-        LoopGrid grid = new LoopGrid(10, 10);
+        // Set the native look and feel
+        System.out.println("Setting native look and feel...");
+        WindowUtils.useNativeLookAndFeel();
+
+        // TODO: Remove this, debug only
+        // Create the grid frame
+        Random rand = new Random();
+        LoopGrid grid = new LoopGrid(5 + rand.nextInt(8), 5 + rand.nextInt(8));
         grid.fillWithRandom();
         GridFrame frame = new GridFrame(grid);
 
