@@ -1,9 +1,18 @@
 package com.timvisee.loopsolver.tile;
 
+import com.timvisee.loopsolver.util.MathUtils;
+
 public class LoopTile {
 
     /** Number of tile sides. */
     public static final int TILE_SIDES = 4;
+
+    /** Number to rotate tile clockwise. */
+    public static final int TILE_ROTATE_CLOCKWISE = 1;
+    /** Number to rotate tile counterclockwise. */
+    public static final int TILE_ROTATE_COUNTERCLOCKWISE = 3;
+    /** Number to rotate tile half. */
+    public static final int TILE_ROTATE_HALF = 2;
 
     /** Defines the tile sides, true if a side can connect, false if not. */
     private boolean[] sides = new boolean[TILE_SIDES];
@@ -78,6 +87,26 @@ public class LoopTile {
     }
 
     /**
+     * Set the sides of the tile.
+     *
+     * @param top True if this side is connectible, false if not.
+     * @param right True if this side is connectible, false if not.
+     * @param bottom True if this side is connectible, false if not.
+     * @param left True if this side is connectible, false if not.
+     */
+    public void setSides(boolean top, boolean right, boolean bottom, boolean left) {
+        setSides(new boolean[]{top, right, bottom, left});
+    }
+
+    /**
+     * Make this tile empty.
+     */
+    public void empty() {
+        // Set the sides, to make this tile empty
+        setSides(false, false, false, false);
+    }
+
+    /**
      * Check if this tile is empty. (If it doesn't have any side that can connect to anything).
      *
      * @return True if the tile is empty, false otherwise.
@@ -90,5 +119,23 @@ public class LoopTile {
 
         // The tile seems to be empty, return true
         return true;
+    }
+
+    /**
+     * Rotate the tile by the given amount. The amount of the number of quarters to rotate.
+     *
+     * @param amount Number of quarters to rotate.
+     */
+    public void rotate(int amount) {
+        // Get the modulo value
+        amount = MathUtils.realMod(amount, TILE_SIDES);
+
+        // Shift the values by the given amount
+        for(int i = 0; i < amount; i++) {
+            // Shift the values by one position
+            boolean end = this.sides[this.sides.length - 1];
+            System.arraycopy(this.sides, 0, this.sides, 1, this.sides.length - 1);
+            this.sides[0] = end;
+        }
     }
 }
