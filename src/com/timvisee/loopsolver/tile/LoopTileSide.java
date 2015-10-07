@@ -25,7 +25,7 @@ public enum LoopTileSide {
      *
      * @return Side number.
      */
-    private int side() {
+    public int side() {
         return side;
     }
 }
