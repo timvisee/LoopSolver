@@ -27,6 +27,7 @@ public class App {
         System.out.println("Initializing " + LoopSolver.APP_NAME + "...");
 
         LoopGrid grid = new LoopGrid(10, 10);
+        grid.fillWithRandom();
         GridFrame frame = new GridFrame(grid);
 
         // Show an initialized message

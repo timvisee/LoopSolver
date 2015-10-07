@@ -147,4 +147,17 @@ public class LoopGrid {
         for(int i = 0; i < getTotal(); i++)
             this.tiles.add(LoopTile.createEmpty());
     }
+
+    /**
+     * Fill the grid with random tiles.
+     * Note: This replaces all current tiles.
+     */
+    public void fillWithRandom() {
+        // Clear the tiles list
+        this.tiles.clear();
+
+        // Fill the list with empty tiles
+        for(int i = 0; i < getTotal(); i++)
+            this.tiles.add(LoopTile.createRandom());
+    }
 }

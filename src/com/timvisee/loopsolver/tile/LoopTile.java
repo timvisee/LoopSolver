@@ -2,6 +2,8 @@ package com.timvisee.loopsolver.tile;
 
 import com.timvisee.loopsolver.util.MathUtils;
 
+import java.util.Random;
+
 public class LoopTile {
 
     /** Number of tile sides. */
@@ -50,10 +52,23 @@ public class LoopTile {
     /**
      * Create an empty tile.
      *
-     * @return The emtpy tile.
+     * @return The empty tile.
      */
     public static LoopTile createEmpty() {
         return new LoopTile();
+    }
+
+    /**
+     * Create a random tile.
+     *
+     * @return The random tile.
+     */
+    public static LoopTile createRandom() {
+        // Create a random object
+        Random rand = new Random();
+
+        // Create and return the tile
+        return new LoopTile(rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean());
     }
 
     /**
