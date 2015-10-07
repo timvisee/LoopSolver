@@ -178,4 +178,76 @@ public class LoopTile {
             this.sides[0] = end;
         }
     }
+
+    /**
+     * Rotate the tile clockwise.
+     */
+    public void rotateClockwise() {
+        rotate(TILE_ROTATE_CLOCKWISE);
+    }
+
+    /**
+     * Check whether this tile is a straight piece.
+     *
+     * @return True if the tile is a straight piece.
+     */
+    public boolean isStraight() {
+        return (getSide(LoopTileSide.TOP) && getSide(LoopTileSide.BOTTOM) && !(getSide(LoopTileSide.LEFT) || getSide(LoopTileSide.RIGHT)) ||
+                getSide(LoopTileSide.LEFT) && getSide(LoopTileSide.RIGHT) && !(getSide(LoopTileSide.TOP) || getSide(LoopTileSide.BOTTOM)));
+    }
+
+    /**
+     * Check whether this piece is straight and horizontal.
+     *
+     * @return True if horizontal, false if not.
+     */
+    public boolean isHorizontal() {
+        // Make sure the piece is straight
+        if(!isStraight())
+            return false;
+
+        // Return the result
+        return getSide(LoopTileSide.LEFT) || getSide(LoopTileSide.RIGHT);
+    }
+
+    /**
+     * Check whether this piece is straight and vertical.
+     *
+     * @return True if vertical, false if not.
+     */
+    public boolean isVertical() {
+        // Make sure the piece is straight
+        if(!isStraight())
+            return false;
+
+        // Return the result
+        return getSide(LoopTileSide.TOP) || getSide(LoopTileSide.BOTTOM);
+    }
+
+    /**
+     * Check whether this tile is a corner piece.
+     *
+     * @return True if the tile is a corner piece, false if not.
+     */
+    public boolean isCorner() {
+        return getConnectibleSides() == 2 && !isStraight();
+    }
+
+    /**
+     * Check whether this tile is an end piece.
+     *
+     * @return True if the tile is an end piece, false if not.
+     */
+    public boolean isEnd() {
+        return getConnectibleSides() == 1;
+    }
+
+    /**
+     * Check whether this tile is T-shaped.
+     *
+     * @return True if the tile is T-shaped, false if not.
+     */
+    public boolean isTShape() {
+        return getConnectibleSides() == 3;
+    }
 }

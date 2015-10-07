@@ -2,12 +2,15 @@ package com.timvisee.loopsolver;
 
 import com.timvisee.loopsolver.frame.GridFrame;
 import com.timvisee.loopsolver.grid.LoopGrid;
-import com.timvisee.loopsolver.tile.LoopTile;
+import com.timvisee.loopsolver.solver.Solver;
 import com.timvisee.loopsolver.util.WindowUtils;
 
 import java.util.Random;
 
 public class App {
+
+    /** App instance. */
+    public static App instance;
 
     /** Current grid. */
     private LoopGrid grid;
@@ -18,6 +21,9 @@ public class App {
      * @param init True to initialize, false otherwise.
      */
     public App(boolean init) {
+        // Set the app instance
+        instance = this;
+
         // Initialize
         if(init)
             init();
@@ -45,5 +51,10 @@ public class App {
 
         // Create and show the grid frame
         GridFrame frame = new GridFrame(grid);
+    }
+
+    public void solve() {
+        Thread t = new Thread(new Solver(this.grid));
+        t.start();
     }
 }

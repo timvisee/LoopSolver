@@ -1,5 +1,6 @@
 package com.timvisee.loopsolver.frame;
 
+import com.timvisee.loopsolver.App;
 import com.timvisee.loopsolver.LoopSolver;
 import com.timvisee.loopsolver.grid.LoopGrid;
 import com.timvisee.loopsolver.tile.LoopTileDrawable;
@@ -97,7 +98,8 @@ public class GridFrame extends JFrame {
         solveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Solve feature not implemented yet!");
+                App.instance.solve();
+                //JOptionPane.showMessageDialog(frame, "Solve feature not implemented yet!");
             }
         });
         solverMenu.add(solveItem);
