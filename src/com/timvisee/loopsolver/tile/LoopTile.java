@@ -87,6 +87,22 @@ public class LoopTile {
     }
 
     /**
+     * Get the number of connectible sides.
+     *
+     * @return Connectible sides.
+     */
+    public int getConnectibleSides() {
+        // Count the number of connectible sides
+        int sides = 0;
+        for(boolean side : this.sides)
+            if(side)
+                sides++;
+
+        // Return the number of connectible sides
+        return sides;
+    }
+
+    /**
      * Set the sides of the tile.
      *
      * @param sides The sides in an array.
