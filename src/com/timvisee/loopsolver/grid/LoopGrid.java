@@ -9,7 +9,7 @@ public class LoopGrid {
 
     /** Grid width. */
     private int width;
-    /** Grid heigth. */
+    /** Grid height. */
     private int height;
 
     /** List of tiles in this grid. */
@@ -22,9 +22,7 @@ public class LoopGrid {
      * @param height Grid height.
      */
     public LoopGrid(int width, int height) {
-        // Set the width and height
-        this.width = width;
-        this.height = height;
+        setSize(width, height);
     }
 
     /**
@@ -46,21 +44,28 @@ public class LoopGrid {
     }
 
     /**
+     * Set the size of the grid.
+     * This fills the grid with empty tiles.
+     *
+     * @param width Grid width.
+     * @param height Grid height.
+     */
+    public void setSize(int width, int height) {
+        // Set the width and height
+        this.width = width;
+        this.height = height;
+
+        // Fill the list with empty tiles
+        fillWithEmpty();
+    }
+
+    /**
      * Get the total number of tiles in this grid.
      *
      * @return Total number of tiles in this grid.
      */
     public int getTotal() {
         return this.getWidth() * this.getHeight();
-    }
-
-    /**
-     * Get the full list of tiles.
-     *
-     * @return Full list of tiles.
-     */
-    public List<LoopTile> getTiles() {
-        return this.tiles;
     }
 
     /**
@@ -75,7 +80,6 @@ public class LoopGrid {
         // TODO: Make sure the position isn't out of bound!
         return x + (y * this.getWidth());
     }
-
 
     /**
      * Get the tile at a specific location.
@@ -120,5 +124,27 @@ public class LoopGrid {
      */
     public void setTile(int position, LoopTile tile) {
         this.tiles.set(position, tile);
+    }
+
+    /**
+     * Get the full list of tiles.
+     *
+     * @return Full list of tiles.
+     */
+    public List<LoopTile> getTiles() {
+        return this.tiles;
+    }
+
+    /**
+     * Fill the grid with empty tiles.
+     * Note: This replaces all current tiles.
+     */
+    public void fillWithEmpty() {
+        // Clear the tiles list
+        this.tiles.clear();
+
+        // Fill the list with empty tiles
+        for(int i = 0; i < getTotal(); i++)
+            this.tiles.add(LoopTile.createEmpty());
     }
 }
