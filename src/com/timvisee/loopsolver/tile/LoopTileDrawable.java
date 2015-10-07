@@ -37,8 +37,37 @@ public class LoopTileDrawable extends JPanel {
         // Paint the super
         super.paintComponent(g);
 
-        // Paint the component itself
-        g.drawString("Test", 10, 20);
+        // Parse the Graphics2D object
+        Graphics2D g2 = (Graphics2D) g;
+
+        // Enable anti-aliasing
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Get the smallest side
+        int sideSmallest = Math.min(getWidth(), getHeight());
+
+        // Determine the tube width and circle size
+        int tubeSize = (int) (sideSmallest / 6.5f);
+        int circleSize = (int) (tubeSize * 2.25f);
+
+        // Paint the center circle
+        g2.fillOval((getWidth() / 2) - (circleSize / 2), (getHeight() / 2) - (circleSize / 2), circleSize, circleSize);
+
+        // Paint the top tube
+        if(this.tile.getSide(LoopTileSide.TOP))
+            g2.fillRect((getWidth() / 2) - (tubeSize / 2), 0, tubeSize, getHeight() / 2);
+
+        // Paint the right tube
+        if(this.tile.getSide(LoopTileSide.RIGHT))
+            g2.fillRect(getWidth() / 2, (getHeight() / 2) - (tubeSize / 2), getWidth() / 2, tubeSize);
+
+        // Paint the bottom tube
+        if(this.tile.getSide(LoopTileSide.BOTTOM))
+            g2.fillRect((getWidth() / 2) - (tubeSize / 2), getHeight() / 2, tubeSize, getHeight() / 2);
+
+        // Paint the left tube
+        if(this.tile.getSide(LoopTileSide.LEFT))
+            g2.fillRect(0, (getHeight() / 2) - (tubeSize / 2), getWidth() / 2, tubeSize);
     }
 
     /**
