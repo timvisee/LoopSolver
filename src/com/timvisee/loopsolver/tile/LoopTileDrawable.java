@@ -7,6 +7,13 @@ import java.awt.event.MouseListener;
 
 public class LoopTileDrawable extends JPanel {
 
+    /** Normal tube color. */
+    public static final Color COLOR_TUBE_NORMAL = new Color(45, 45, 45);
+    /** Normal center color. */
+    public static final Color COLOR_CENTER_NORMAL = new Color(25, 25, 25);
+    /** Empty center color. */
+    public static final Color COLOR_CENTER_EMPTY = Color.GRAY;
+
     /** Loop tile instance to draw. */
     private LoopTile tile;
 
@@ -76,8 +83,8 @@ public class LoopTileDrawable extends JPanel {
         int tubeSize = (int) (sideSmallest / 6.5f);
         int circleSize = (int) (tubeSize * 2.25f);
 
-        // Paint the center circle
-        g2.fillOval((getWidth() / 2) - (circleSize / 2), (getHeight() / 2) - (circleSize / 2), circleSize, circleSize);
+        // Set the tube color
+        g2.setColor(COLOR_TUBE_NORMAL);
 
         // Paint the top tube
         if(this.tile.getSide(LoopTileSide.TOP))
@@ -94,6 +101,15 @@ public class LoopTileDrawable extends JPanel {
         // Paint the left tube
         if(this.tile.getSide(LoopTileSide.LEFT))
             g2.fillRect(0, (getHeight() / 2) - (tubeSize / 2), getWidth() / 2, tubeSize);
+
+        // Set the center color
+        if(this.tile.isEmpty())
+            g2.setColor(COLOR_CENTER_EMPTY);
+        else
+            g2.setColor(COLOR_CENTER_NORMAL);
+
+        // Draw the center
+        g2.fillOval((getWidth() / 2) - (circleSize / 2), (getHeight() / 2) - (circleSize / 2), circleSize, circleSize);
     }
 
     /**
