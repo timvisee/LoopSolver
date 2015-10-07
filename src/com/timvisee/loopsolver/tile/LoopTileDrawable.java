@@ -2,6 +2,8 @@ package com.timvisee.loopsolver.tile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class LoopTileDrawable extends JPanel {
 
@@ -11,12 +13,36 @@ public class LoopTileDrawable extends JPanel {
     /**
      * Constructor.
      */
-    public LoopTileDrawable(LoopTile tile) {
+    public LoopTileDrawable(final LoopTile tile) {
         // Set the loop tile
-        setTile(tile);
+        this.tile = tile;
 
         // Set the border
         setBorder(BorderFactory.createLineBorder(Color.gray));
+
+        // Add a mouse listener
+        addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Rotate the tile
+                tile.rotate(LoopTile.TILE_ROTATE_CLOCKWISE);
+
+                // Repaint the tile
+                repaint();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) { }
+
+            @Override
+            public void mouseReleased(MouseEvent e) { }
+
+            @Override
+            public void mouseEntered(MouseEvent e) { }
+
+            @Override
+            public void mouseExited(MouseEvent e) { }
+        });
     }
 
     /**
@@ -77,14 +103,5 @@ public class LoopTileDrawable extends JPanel {
      */
     public LoopTile getTile() {
         return this.tile;
-    }
-
-    /**
-     * Set the loop tile.
-     *
-     * @param tile Loop tile.
-     */
-    public void setTile(LoopTile tile) {
-        this.tile = tile;
     }
 }
