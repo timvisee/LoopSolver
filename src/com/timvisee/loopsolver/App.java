@@ -9,6 +9,9 @@ import java.util.Random;
 
 public class App {
 
+    /** Current grid. */
+    private LoopGrid grid;
+
     /**
      * Constructor.
      *
@@ -31,26 +34,16 @@ public class App {
         System.out.println("Setting native look and feel...");
         WindowUtils.useNativeLookAndFeel();
 
-        // TODO: Remove this, debug only
+        // TODO: This code is currently for debugging only
         // Create the grid frame
         Random rand = new Random();
-        LoopGrid grid = new LoopGrid(5 + rand.nextInt(8), 5 + rand.nextInt(8));
-        grid.fillWithRandom();
-        GridFrame frame = new GridFrame(grid);
+        this.grid = new LoopGrid(5 + rand.nextInt(8), 5 + rand.nextInt(8));
+        this.grid.fillWithRandom();
 
         // Show an initialized message
         System.out.println(LoopSolver.APP_NAME + " initialized! Cave Johnson here.");
-    }
 
-    // TODO: Remove this method!
-
-    /**
-     * Generate a random tile.
-     *
-     * @return Random tile.
-     */
-    public static LoopTile getRandomTile() {
-        Random rand = new Random();
-        return new LoopTile(rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean());
+        // Create and show the grid frame
+        GridFrame frame = new GridFrame(grid);
     }
 }
