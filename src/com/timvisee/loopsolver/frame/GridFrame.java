@@ -2,6 +2,7 @@ package com.timvisee.loopsolver.frame;
 
 import com.timvisee.loopsolver.LoopSolver;
 import com.timvisee.loopsolver.grid.LoopGrid;
+import com.timvisee.loopsolver.tile.LoopTileDrawable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +54,6 @@ public class GridFrame extends JFrame {
         // TODO: Do this properly!
 
         for(int i = 0; i < this.grid.getTotal(); i++)
-            this.add(new JButton(String.valueOf(this.grid.getTile(i).getConnectibleSides())));
+            this.add(new LoopTileDrawable(this.grid.getTile(i)));
     }
 }
