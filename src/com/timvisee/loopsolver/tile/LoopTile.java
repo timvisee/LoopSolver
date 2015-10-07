@@ -60,6 +60,15 @@ public class LoopTile {
     }
 
     /**
+     * Get the loop tile sides in an boolean array.
+     *
+     * @return Sides.
+     */
+    public boolean[] getSides() {
+        return this.sides;
+    }
+
+    /**
      * Set the sides of the tile.
      *
      * @param sides The sides in an array.
