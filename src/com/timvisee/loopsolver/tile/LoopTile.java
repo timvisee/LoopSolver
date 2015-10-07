@@ -48,6 +48,15 @@ public class LoopTile {
     }
 
     /**
+     * Create an empty tile.
+     *
+     * @return The emtpy tile.
+     */
+    public static LoopTile createEmpty() {
+        return new LoopTile();
+    }
+
+    /**
      * Check whether a specific side of the tile is connectible.
      *
      * @param side The side.
