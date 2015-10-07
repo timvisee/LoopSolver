@@ -5,12 +5,18 @@ import java.awt.*;
 
 public class LoopTileDrawable extends JPanel {
 
+    /** Loop tile instance to draw. */
+    private LoopTile tile;
+
     /**
      * Constructor.
      */
-    public LoopTileDrawable() {
+    public LoopTileDrawable(LoopTile tile) {
+        // Set the loop tile
+        setTile(tile);
+
         // Set the border
-        setBorder(BorderFactory.createLineBorder(Color.black));
+        setBorder(BorderFactory.createLineBorder(Color.gray));
     }
 
     /**
@@ -33,5 +39,23 @@ public class LoopTileDrawable extends JPanel {
 
         // Paint the component itself
         g.drawString("Test", 10, 20);
+    }
+
+    /**
+     * Get the loop tile.
+     *
+     * @return Loop tile.
+     */
+    public LoopTile getTile() {
+        return this.tile;
+    }
+
+    /**
+     * Set the loop tile.
+     *
+     * @param tile Loop tile.
+     */
+    public void setTile(LoopTile tile) {
+        this.tile = tile;
     }
 }
