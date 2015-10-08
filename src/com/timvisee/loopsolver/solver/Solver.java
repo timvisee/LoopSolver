@@ -36,27 +36,25 @@ public class Solver implements Runnable {
             LoopTile tileBottom = this.grid.getTile(x, this.grid.getHeight() - 1);
 
             // Rotate the piece if it's straight and vertical
-            if(tileTop.isStraight() && tileTop.isVertical())
-                tileTop.rotateClockwise();
-            if(tileBottom.isStraight() && tileBottom.isVertical())
-                tileBottom.rotateClockwise();
+            if(tileTop.isStraight()) {
+                if(tileTop.isVertical())
+                    tileTop.rotateClockwise();
+                tileTop.setSolved(true);
+            }
+            if(tileBottom.isStraight()) {
+                if(tileBottom.isVertical())
+                    tileBottom.rotateClockwise();
+                tileBottom.setSolved(true);
+            }
 
             // Properly rotate T-Shapes
-            if(tileTop.isTShape() && tileTop.getSide(LoopTileSide.TOP)) {
-                if(!tileTop.getSide(LoopTileSide.LEFT))
-                    tileTop.rotate(LoopTile.TILE_ROTATE_CLOCKWISE);
-                if(!tileTop.getSide(LoopTileSide.BOTTOM))
-                    tileTop.rotate(LoopTile.TILE_ROTATE_HALF);
-                if(!tileTop.getSide(LoopTileSide.RIGHT))
-                    tileTop.rotate(LoopTile.TILE_ROTATE_COUNTERCLOCKWISE);
+            if(tileTop.isTShape()) {
+                tileTop.rotate(LoopTileSide.TOP.side() - tileTop.getFirstEmptySide().side());
+                tileTop.setSolved(true);
             }
-            if(tileBottom.isTShape() && tileBottom.getSide(LoopTileSide.BOTTOM)) {
-                if(!tileBottom.getSide(LoopTileSide.LEFT))
-                    tileBottom.rotate(LoopTile.TILE_ROTATE_COUNTERCLOCKWISE);
-                if(!tileBottom.getSide(LoopTileSide.TOP))
-                    tileBottom.rotate(LoopTile.TILE_ROTATE_HALF);
-                if(!tileBottom.getSide(LoopTileSide.RIGHT))
-                    tileBottom.rotate(LoopTile.TILE_ROTATE_CLOCKWISE);
+            if(tileBottom.isTShape()) {
+                tileBottom.rotate(LoopTileSide.BOTTOM.side() - tileBottom.getFirstEmptySide().side());
+                tileBottom.setSolved(true);
             }
         }
 
@@ -67,28 +65,50 @@ public class Solver implements Runnable {
             LoopTile tileRight = this.grid.getTile(this.grid.getWidth() - 1, y);
 
             // Rotate the piece if it's straight and vertical
-            if(tileLeft.isStraight() && tileLeft.isHorizontal())
-                tileLeft.rotateClockwise();
-            if(tileRight.isStraight() && tileRight.isHorizontal())
-                tileRight.rotateClockwise();
+            if(tileLeft.isStraight()) {
+                if(tileLeft.isHorizontal())
+                    tileLeft.rotateClockwise();
+                tileLeft.setSolved(true);
+            }
+            if(tileRight.isStraight()) {
+                if(tileRight.isHorizontal())
+                    tileRight.rotateClockwise();
+                tileRight.setSolved(true);
+            }
 
             // Properly rotate T-Shapes
-            if(tileLeft.isTShape() && tileLeft.getSide(LoopTileSide.LEFT)) {
-                if(!tileLeft.getSide(LoopTileSide.TOP))
-                    tileLeft.rotate(LoopTile.TILE_ROTATE_COUNTERCLOCKWISE);
-                if(!tileLeft.getSide(LoopTileSide.RIGHT))
-                    tileLeft.rotate(LoopTile.TILE_ROTATE_HALF);
-                if(!tileLeft.getSide(LoopTileSide.BOTTOM))
-                    tileLeft.rotate(LoopTile.TILE_ROTATE_CLOCKWISE);
+            if(tileLeft.isTShape()) {
+                tileLeft.rotate(LoopTileSide.LEFT.side() - tileLeft.getFirstEmptySide().side());
+                tileLeft.setSolved(true);
             }
-            if(tileRight.isTShape() && tileRight.getSide(LoopTileSide.RIGHT)) {
-                if(!tileRight.getSide(LoopTileSide.BOTTOM))
-                    tileRight.rotate(LoopTile.TILE_ROTATE_COUNTERCLOCKWISE);
-                if(!tileRight.getSide(LoopTileSide.LEFT))
-                    tileRight.rotate(LoopTile.TILE_ROTATE_HALF);
-                if(!tileRight.getSide(LoopTileSide.TOP))
-                    tileRight.rotate(LoopTile.TILE_ROTATE_CLOCKWISE);
+            if(tileRight.isTShape()) {
+                tileRight.rotate(LoopTileSide.RIGHT.side() - tileRight.getFirstEmptySide().side());
+                tileRight.setSolved(true);
             }
+        }
+
+        // Get the corner pieces
+        LoopTile topLeft = this.grid.getTile(0, 0);
+        LoopTile topRight = this.grid.getTile(this.grid.getWidth() - 1, 0);
+        LoopTile bottomLeft = this.grid.getTile(0, this.grid.getHeight() - 1);
+        LoopTile bottomRight = this.grid.getTile(this.grid.getWidth() - 1, this.grid.getHeight() - 1);
+
+        // Rotate the corners correctly if they're corner pieces
+        if(topLeft.isCorner()) {
+            topLeft.rotate(LoopTileSide.LEFT.side() - topLeft.getFirstEmptySide().side());
+            topLeft.setSolved(true);
+        }
+        if(topRight.isCorner()) {
+            topRight.rotate(LoopTileSide.TOP.side() - topRight.getFirstEmptySide().side());
+            topRight.setSolved(true);
+        }
+        if(bottomLeft.isCorner()) {
+            bottomLeft.rotate(LoopTileSide.BOTTOM.side() - bottomLeft.getFirstEmptySide().side());
+            bottomLeft.setSolved(true);
+        }
+        if(bottomRight.isCorner()) {
+            bottomRight.rotate(LoopTileSide.RIGHT.side() - bottomRight.getFirstEmptySide().side());
+            bottomRight.setSolved(true);
         }
     }
 }

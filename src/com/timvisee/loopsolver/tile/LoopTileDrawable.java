@@ -73,6 +73,15 @@ public class LoopTileDrawable extends JPanel {
         // Parse the Graphics2D object
         Graphics2D g2 = (Graphics2D) g;
 
+        // Add a background if the tile is solved
+        if(this.tile.isSolved()) {
+            // Set the background color
+            g2.setColor(Color.GREEN);
+
+            // Draw the background
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        }
+
         // Enable anti-aliasing
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

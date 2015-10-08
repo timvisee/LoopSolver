@@ -1,5 +1,6 @@
 package com.timvisee.loopsolver.tile;
 
+import com.timvisee.loopsolver.App;
 import com.timvisee.loopsolver.util.MathUtils;
 
 import java.util.Random;
@@ -18,6 +19,9 @@ public class LoopTile {
 
     /** Defines the tile sides, true if a side can connect, false if not. */
     private boolean[] sides = new boolean[TILE_SIDES];
+
+    /** True if this tile is solved, false if not. */
+    private boolean solved = false;
 
     /**
      * Constructor.
@@ -83,6 +87,17 @@ public class LoopTile {
     }
 
     /**
+     * Check whether a specific side of the tile is connectible.
+     *
+     * @param side The side.
+     *
+     * @return True if it's connectible, false if not.
+     */
+    public boolean getSide(int side) {
+        return this.sides[MathUtils.realMod(side, TILE_SIDES)];
+    }
+
+    /**
      * Set whether a specific side is connectible.
      *
      * @param side The side.
@@ -90,6 +105,7 @@ public class LoopTile {
      */
     public void setSide(LoopTileSide side, boolean connectible) {
         this.sides[side.side()] = connectible;
+        this.setSolved(false);
     }
 
     /**
@@ -124,6 +140,7 @@ public class LoopTile {
      */
     public void setSides(boolean[] sides) {
         System.arraycopy(sides, 0, this.sides, 0, TILE_SIDES);
+        this.setSolved(false);
     }
 
     /**
@@ -136,6 +153,7 @@ public class LoopTile {
      */
     public void setSides(boolean top, boolean right, boolean bottom, boolean left) {
         setSides(new boolean[]{top, right, bottom, left});
+        this.setSolved(false);
     }
 
     /**
@@ -177,6 +195,8 @@ public class LoopTile {
             System.arraycopy(this.sides, 0, this.sides, 1, this.sides.length - 1);
             this.sides[0] = end;
         }
+
+        this.setSolved(false);
     }
 
     /**
@@ -249,5 +269,58 @@ public class LoopTile {
      */
     public boolean isTShape() {
         return getConnectibleSides() == 3;
+    }
+
+    /**
+     * Check whether this tile is solved.
+     *
+     * @return True if this tile is solved.
+     */
+    public boolean isSolved() {
+        return this.solved;
+    }
+
+    /**
+     * Set whether this tile is solved.
+     *
+     * @param solved True if solved, false if not.
+     */
+    public void setSolved(boolean solved) {
+        this.solved = solved;
+
+        // TODO: Improve this!
+        // Redraw the drawable grid
+        if(App.instance.getDrawableGrid() != null)
+            App.instance.getDrawableGrid().repaint();
+    }
+
+    /**
+     * Find the first non-connectible side, in a clockwise manner.
+     *
+     * @return First non-connectible side.
+     */
+    public LoopTileSide getFirstEmptySide() {
+        // Return null if the tile is empty
+        if(isEmpty())
+            return null;
+
+        // Set whether we past a connectible side
+        boolean connectible = false;
+
+        // Loop through all the sides to find the first non-connectible side
+        for(int i = 0; i < TILE_SIDES * 2; i++) {
+            // Get the side
+            boolean side = getSide(i);
+
+            // Return the side if this is the first empty side
+            if(connectible && !side)
+                return LoopTileSide.bySide(i);
+
+            if(!connectible && side)
+                connectible = true;
+        }
+
+        // Not found, return null
+        return null;
     }
 }

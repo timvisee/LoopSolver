@@ -1,5 +1,7 @@
 package com.timvisee.loopsolver.tile;
 
+import com.timvisee.loopsolver.util.MathUtils;
+
 public enum LoopTileSide {
 
     /** Enum sides. */
@@ -27,5 +29,25 @@ public enum LoopTileSide {
      */
     public int side() {
         return side;
+    }
+
+    /**
+     * Get the side enum by a side value.
+     *
+     * @param side Side value.
+     *
+     * @return The enum.
+     */
+    public static LoopTileSide bySide(int side) {
+        // Mod the side
+        side = MathUtils.realMod(side, LoopTile.TILE_SIDES);
+
+        // Loop through the sides and return the correct one
+        for(LoopTileSide entry : LoopTileSide.values())
+            if(entry.side() == side)
+                return entry;
+
+        // Return null
+        return null;
     }
 }

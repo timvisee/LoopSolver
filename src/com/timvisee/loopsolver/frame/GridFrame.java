@@ -47,7 +47,9 @@ public class GridFrame extends JFrame {
         createMenuBar();
 
         // Create and add the grid panel
-        this.add(createGridPanel());
+        JPanel drawableGrid = createGridPanel();
+        App.instance.setDrawableGrid(drawableGrid);
+        this.add(drawableGrid);
 
         // Pack all components
         this.pack();
