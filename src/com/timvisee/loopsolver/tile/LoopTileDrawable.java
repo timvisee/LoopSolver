@@ -1,7 +1,5 @@
 package com.timvisee.loopsolver.tile;
 
-import com.timvisee.loopsolver.util.MathUtils;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;

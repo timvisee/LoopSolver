@@ -33,18 +33,21 @@ public class Solver implements Runnable {
 
     @Override
     public void run() {
-        // Loop through all the tiles in the whole grid
-        for(LoopTile tile : this.grid.getTiles()) {
-            // Solve empty tiles
-            if(tile.isEmpty())
-                tile.setSolved(true);
+//        // Loop through all the tiles in the whole grid
+//        for(LoopTile tile : this.grid.getTiles()) {
+//            // Solve empty tiles
+//            if(tile.isEmpty())
+//                tile.setSolved(true);
+//
+//            // Solve tiles with 4 sides
+//            if(tile.getConnectibleSides() == 4)
+//                tile.setSolved(true);
+//        }
 
-            // Solve tiles with 4 sides
-            if(tile.getConnectibleSides() == 4)
-                tile.setSolved(true);
-        }
+        for(int i = 0; i < this.grid.getTotal(); i++)
+            solveTile(this.grid.getTile(i));
 
-        // Loop through all tiles on the top and bottom side
+        /*// Loop through all tiles on the top and bottom side
         for(int x = 1; x < (this.grid.getWidth() - 1); x++) {
             // Get the tile
             LoopTile tileTop = this.grid.getTile(x, 0);
@@ -136,7 +139,7 @@ public class Solver implements Runnable {
             bottomRight.rotate(LoopTileSide.RIGHT.side() - bottomRight.getFirstEmptySide().side());
             bottomRight.setSolved(true);
             solveTiles(bottomRight.getNeighbours());
-        }
+        }*/
     }
 
     public void solveTiles(List<LoopTile> tiles) {
@@ -153,6 +156,12 @@ public class Solver implements Runnable {
     }
 
     public boolean rotateIfOnePossible(LoopTile tile) {
+        try {
+            Thread.sleep(100);
+        } catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+
         // Make sure the tile isn't solved already
         if(tile.isSolved())
             return true;
