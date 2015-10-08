@@ -386,7 +386,22 @@ public class LoopTile {
      * @return The relative tile, or null.
      */
     public LoopTile getRelativeTile(int rx, int ry) {
-        return this.grid.getTile(getX() + rx, getY() + ry);
+        // Get the relative tile
+        LoopTile relativeTile = this.grid.getTile(getX() + rx, getY() + ry);
+
+        // Set the checking tile
+        if(relativeTile != null && !relativeTile.isSolved()) {
+            this.grid.setCheckingTile(relativeTile);
+            try {
+                Thread.sleep(25);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else
+            this.grid.setCheckingTile(null);
+
+        // Return the relative tile
+        return relativeTile;
     }
 
     /**
@@ -681,5 +696,53 @@ public class LoopTile {
 
     public boolean isSideCorrect(LoopTileSide side) {
         return (getSide(side) && getSideMustConnectNeighbour(side)) || (!getSide(side) && getSideCanNotConnectNeighbour(side));
+    }
+
+    public boolean fitInCurrentState() {
+        // Loop through the sides
+        for(LoopTileSide side : LoopTileSide.values()) {
+            // Get the neighbour on this side
+            LoopTile neighbour = getNeighbour(side);
+
+            // If the neighbour is null, make sure this side isn't connectible
+            if(neighbour == null) {
+                if(getSide(side))
+                    return false;
+                continue;
+            }
+
+            // Make sure both sides are, or aren't connectible
+            if(getSide(side) != neighbour.getSide(side.opposite()))
+                return false;
+        }
+
+        // The tile seems to fit, return true
+        return true;
+    }
+
+    public boolean fitInSolvedCurrentState() {
+        // Loop through the sides
+        for(LoopTileSide side : LoopTileSide.values()) {
+            // Get the neighbour on this side
+            LoopTile neighbour = getNeighbour(side);
+
+            // If the neighbour is null, make sure this side isn't connectible
+            if(neighbour == null) {
+                if(getSide(side))
+                    return false;
+                continue;
+            }
+
+            // Make sure the neighbour is solved
+            if(!neighbour.isSolved())
+                continue;
+
+            // Make sure both sides are, or aren't connectible
+            if(getSide(side) != neighbour.getSide(side.opposite()))
+                return false;
+        }
+
+        // The tile seems to fit, return true
+        return true;
     }
 }

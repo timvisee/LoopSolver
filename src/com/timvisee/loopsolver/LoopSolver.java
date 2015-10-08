@@ -5,7 +5,7 @@ public class LoopSolver {
     /** App name. */
     public static final String APP_NAME = "Loop Solver";
     /** App version name. */
-    public static final String APP_VERSION_NAME = "0.1";
+    public static final String APP_VERSION_NAME = "0.1-Alpha";
     /** App version code. */
     public static final int APP_VERSION_CODE = 1;
 

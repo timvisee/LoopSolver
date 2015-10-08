@@ -1,5 +1,7 @@
 package com.timvisee.loopsolver.tile;
 
+import com.timvisee.loopsolver.App;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -99,6 +101,15 @@ public class LoopTileDrawable extends JPanel {
             g2.setColor(Color.GREEN);
 
             // Draw the background
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        }
+
+        if(this.tile.getGrid().getWorkingTile() != null && this.tile.getGrid().getWorkingTile().equals(this.tile)) {
+            Color c = new Color(0, 125, 0);
+            g2.setColor(c);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        } else if(this.tile.getGrid().getCheckingTile() != null && this.tile.getGrid().getCheckingTile().equals(this.tile)) {
+            g2.setColor(Color.ORANGE);
             g2.fillRect(0, 0, getWidth(), getHeight());
         }
 

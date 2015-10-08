@@ -18,6 +18,8 @@ public class App {
     private LoopGrid grid;
     /** Current drawable grid. */
     private JPanel drawableGrid;
+    /** Grid frame instance. */
+    private GridFrame gridFrame;
 
     /**
      * Constructor.
@@ -46,15 +48,15 @@ public class App {
 
         // TODO: This code is currently for debugging only
         // Create the grid frame
-        createPossibleGrid();
+        //createPossibleGrid();
         //createRandomGrid();
-        //createEmptyGrid();
+        createEmptyGrid();
 
         // Show an initialized message
         System.out.println(LoopSolver.APP_NAME + " initialized! Cave Johnson here.");
 
         // Create and show the grid frame
-        GridFrame frame = new GridFrame(grid);
+        this.gridFrame = new GridFrame(grid);
     }
 
     public void solve() {
@@ -69,7 +71,7 @@ public class App {
     }
 
     public void createEmptyGrid() {
-        this.grid = new LoopGrid(16, 16);
+        this.grid = new LoopGrid(9, 12);
         this.grid.fillWithEmpty();
     }
 
@@ -152,5 +154,9 @@ public class App {
      */
     public void setDrawableGrid(JPanel drawableGrid) {
         this.drawableGrid = drawableGrid;
+    }
+
+    public GridFrame getGridFrame() {
+        return gridFrame;
     }
 }

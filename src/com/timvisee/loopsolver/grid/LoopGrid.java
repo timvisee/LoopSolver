@@ -1,6 +1,8 @@
 package com.timvisee.loopsolver.grid;
 
+import com.timvisee.loopsolver.App;
 import com.timvisee.loopsolver.tile.LoopTile;
+import com.timvisee.loopsolver.tile.LoopTileDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,12 @@ public class LoopGrid {
     private int height;
 
     /** List of tiles in this grid. */
-    private List<LoopTile> tiles = new ArrayList<LoopTile>();
+    private List<LoopTile> tiles = new ArrayList<>();
+
+    /** The tile the solver is currently working on. */
+    private LoopTile workingTile = null;
+    /** The tile the solver is currently checking. */
+    private LoopTile checkingTile = null;
 
     /**
      * Constructor.
@@ -235,5 +242,47 @@ public class LoopGrid {
         // Fill the list with empty tiles
         for(int i = 0; i < getTotal(); i++)
             this.tiles.add(LoopTile.createRandom(this, getTilePositionX(i), getTilePositionY(i)));
+    }
+
+    public LoopTile getWorkingTile() {
+        return workingTile;
+    }
+
+    public void setWorkingTile(LoopTile workingTile) {
+        // Store the current working tile
+        LoopTile oldTile = this.workingTile;
+
+        // Change the working tile
+        this.workingTile = workingTile;
+
+        // Update both tiles
+        LoopTileDrawable oldTileDrawable = App.instance.getGridFrame().getDrawableTile(oldTile);
+        LoopTileDrawable workingTileDrawable = App.instance.getGridFrame().getDrawableTile(workingTile);
+        if(oldTileDrawable != null) {}
+            //oldTileDrawable.repaint();
+        if(workingTileDrawable != null) {}
+            //workingTileDrawable.repaint();
+        App.instance.getGridFrame().repaint();
+    }
+
+    public LoopTile getCheckingTile() {
+        return checkingTile;
+    }
+
+    public void setCheckingTile(LoopTile checkingTile) {
+        // Store the current checking tile
+        LoopTile oldTile = this.checkingTile;
+
+        // Change the checking tile
+        this.checkingTile = checkingTile;
+
+        // Update both tiles
+        LoopTileDrawable oldTileDrawable = App.instance.getGridFrame().getDrawableTile(oldTile);
+        LoopTileDrawable checkingTileDrawable = App.instance.getGridFrame().getDrawableTile(checkingTile);
+        if(oldTileDrawable != null) {}
+            //oldTileDrawable.repaint();
+        if(checkingTileDrawable != null) {}
+            //checkingTileDrawable.repaint();
+        App.instance.getGridFrame().repaint();
     }
 }
