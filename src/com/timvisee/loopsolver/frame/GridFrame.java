@@ -85,9 +85,6 @@ public class GridFrame extends JFrame {
      * Create the menu bar
      */
     public void createMenuBar() {
-        // Store the current frame instance
-        final JFrame frame = this;
-
         // Create the menu bar
         JMenuBar menuBar = new JMenuBar();
 
@@ -97,12 +94,9 @@ public class GridFrame extends JFrame {
 
         // Create the solve item
         JMenuItem solveItem = new JMenuItem("Solve!");
-        solveItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                App.instance.solve();
-                //JOptionPane.showMessageDialog(frame, "Solve feature not implemented yet!");
-            }
+        solveItem.addActionListener(e -> {
+            App.instance.solve();
+            //JOptionPane.showMessageDialog(frame, "Solve feature not implemented yet!");
         });
         solverMenu.add(solveItem);
 
@@ -111,12 +105,9 @@ public class GridFrame extends JFrame {
 
         // Create the exit item
         JMenuItem exitItem = new JMenuItem("Exit");
-        exitItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Exit the application
-                System.exit(1);
-            }
+        exitItem.addActionListener(e -> {
+            // Exit the application
+            System.exit(1);
         });
         solverMenu.add(exitItem);
 
