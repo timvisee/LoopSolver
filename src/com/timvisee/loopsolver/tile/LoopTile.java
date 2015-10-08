@@ -2,6 +2,7 @@ package com.timvisee.loopsolver.tile;
 
 import com.timvisee.loopsolver.App;
 import com.timvisee.loopsolver.grid.LoopGrid;
+import com.timvisee.loopsolver.util.ArrayUtils;
 import com.timvisee.loopsolver.util.MathUtils;
 
 import java.util.ArrayList;
@@ -126,7 +127,7 @@ public class LoopTile {
      * @return Sides.
      */
     public boolean[] getSides() {
-        return this.sides;
+        return this.sides.clone();
     }
 
     /**
@@ -197,17 +198,10 @@ public class LoopTile {
      * @param amount Number of quarters to rotate.
      */
     public void rotate(int amount) {
-        // Get the modulo value
-        amount = MathUtils.realMod(amount, TILE_SIDES);
+        // Shift the array
+        this.sides = ArrayUtils.shiftArrayDown(this.sides, amount);
 
-        // Shift the values by the given amount
-        for(int i = 0; i < amount; i++) {
-            // Shift the values by one position
-            boolean end = this.sides[this.sides.length - 1];
-            System.arraycopy(this.sides, 0, this.sides, 1, this.sides.length - 1);
-            this.sides[0] = end;
-        }
-
+        // Reset the solved flag
         this.setSolved(false);
     }
 
@@ -281,6 +275,15 @@ public class LoopTile {
      */
     public boolean isTShape() {
         return getConnectibleSides() == 3;
+    }
+
+    /**
+     * Check whether this tile is cross shaped.
+     *
+     * @return True if the tile is cross shaped, false if not.
+     */
+    public boolean isCross() {
+        return getConnectibleSides() == 4;
     }
 
     /**
@@ -383,7 +386,18 @@ public class LoopTile {
      * @return The relative tile, or null.
      */
     public LoopTile getRelativeTile(int rx, int ry) {
-        return this.grid.getTile(getX() + rx, getY() + y);
+        return this.grid.getTile(getX() + rx, getY() + ry);
+    }
+
+    /**
+     * Get the neighbour tile at the specified side.
+     *
+     * @param side The side.
+     *
+     * @return The neighbour tile, or null if it doesn't exist.
+     */
+    public LoopTile getNeighbour(LoopTileSide side) {
+        return getRelativeTile(side, 1);
     }
 
     /**
@@ -399,17 +413,20 @@ public class LoopTile {
         int rx = 0, ry = 0;
 
         switch(side) {
-        case TOP:
-            rx -= distance;
-            break;
-        case RIGHT:
-            ry += distance;
-            break;
-        case BOTTOM:
-            rx += distance;
-            break;
-        case LEFT:
-            ry -= distance;
+            case TOP:
+                ry -= distance;
+                break;
+            case RIGHT:
+                rx += distance;
+                break;
+            case BOTTOM:
+                ry += distance;
+                break;
+            case LEFT:
+                rx -= distance;
+                break;
+            default:
+                return null;
         }
 
         // Return the relative tile
@@ -417,18 +434,23 @@ public class LoopTile {
     }
 
     /**
-     * Return all tiles around this one.
+     * Return all neighbour tiles.
      *
-     * @return Tiles around this one.
+     * @return All existing neighbour tiles.
      */
-    public List<LoopTile> getTilesAround() {
+    public List<LoopTile> getNeighbours() {
         // Create a list with tiles
         List<LoopTile> tiles = new ArrayList<>();
 
         // Add the tiles around this one
-        for(LoopTileSide side : LoopTileSide.values())
-            if(getRelativeTile(side, 1) != null)
-                tiles.add(getRelativeTile(side, 1));
+        for(LoopTileSide side : LoopTileSide.values()) {
+            // Get the relative tile
+            LoopTile relativeTile = getRelativeTile(side, 1);
+
+            // Add the tile if it isn't null
+            if(relativeTile != null)
+                tiles.add(relativeTile);
+        }
 
         // Return the tiles around this one
         return tiles;
@@ -450,5 +472,214 @@ public class LoopTile {
 
         // Return the number of empty tiles
         return empty;
+    }
+
+    /**
+     * Check whether this tile must connect at this side.
+     *
+     * @param side The side.
+     *
+     * @return True if it must connect, false if not.
+     */
+    public boolean getSideMustConnectSelf(LoopTileSide side) {
+        // Return true if all sides are connectible
+        if(isCross())
+            return true;
+
+        // Make sure the tile is solved
+        if(!isSolved())
+            return false;
+
+        // Check whether this side is connectible
+        return getSide(side);
+    }
+
+    /**
+     * Check whether this tile must connect at this side.
+     *
+     * @param side The side.
+     *
+     * @return True if it must connect, false if not.
+     */
+    public boolean getSideMustConnectNeighbour(LoopTileSide side) {
+        // Get the tile next to this one at the specified side
+        LoopTile neighbour = getNeighbour(side);
+
+        // Make sure the tile exists
+        if(neighbour == null)
+            return false;
+
+        // Return true if all sides are connectible
+        if(neighbour.isCross())
+            return true;
+
+        // Make sure the tile is solved
+        if(!neighbour.isSolved())
+            return false;
+
+        // Check whether this side is connectible
+        return neighbour.getSide(side.opposite());
+    }
+
+    /**
+     * Check whether this tile can connect at this side.
+     *
+     * @param side The side.
+     *
+     * @return True if it can connect, false if not.
+     */
+    public boolean getSideCanConnectSelf(LoopTileSide side) {
+        // Return true if all sides are connectible
+        if(isCross())
+            return true;
+
+        // Check whether this side is connectible if it's already solved
+        if(isSolved())
+            return getSide(side.opposite());
+
+        // Check whether the neighbour has enough connectible sides
+        return !isEmpty();
+    }
+
+    /**
+     * Check whether this tile can connect at this side.
+     *
+     * @param side The side.
+     *
+     * @return True if it can connect, false if not.
+     */
+    public boolean getSideCanConnectNeighbour(LoopTileSide side) {
+        // Get the tile next to this one at the specified side
+        LoopTile neighbour = getNeighbour(side);
+
+        // Make sure the tile exists
+        if(neighbour == null)
+            return false;
+
+        // Return true if all sides are connectible
+        if(neighbour.isCross())
+            return true;
+
+        // Check whether this side is connectible if it's already solved
+        if(neighbour.isSolved())
+            return neighbour.getSide(side.opposite());
+
+        // Check whether the neighbour has enough connectible sides
+        return !neighbour.isEmpty();
+    }
+
+    /**
+     * Check whether this tile can connect at this side.
+     *
+     * @param side The side.
+     *
+     * @return True if it can connect, false if not.
+     */
+    public boolean getSideCanNotConnectSelf(LoopTileSide side) {
+        // Return true if all sides are connectible
+        if(isCross())
+            return false;
+
+        // Check whether this side is not connectible if it's already solved
+        if(isSolved())
+            return !getSide(side);
+
+        // Check whether the neighbour tile is empty
+        return isEmpty();
+    }
+
+    /**
+     * Check whether this tile can connect at this side.
+     *
+     * @param side The side.
+     *
+     * @return True if it can connect, false if not.
+     */
+    public boolean getSideCanNotConnectNeighbour(LoopTileSide side) {
+        // Get the tile next to this one at the specified side
+        LoopTile neighbour = getNeighbour(side);
+
+        // Make sure the tile exists
+        if(neighbour == null)
+            return true;
+
+        // Return true if all sides are connectible
+        if(neighbour.isCross())
+            return false;
+
+        // Check whether this side is not connectible if it's already solved
+        if(neighbour.isSolved())
+            return !neighbour.getSide(side.opposite());
+
+        // Check whether the neighbour tile is empty
+        return neighbour.isEmpty();
+    }
+
+    /**
+     * Get the number of sides that must connect.
+     *
+     * @return Number of sides that must connect.
+     */
+    public int getSideMustConnectNeighbourCount() {
+        // Count the tiles
+        int tiles = 0;
+
+        // Loop through all the sides
+        for(LoopTileSide side : LoopTileSide.values())
+            if(getSideMustConnectNeighbour(side))
+                tiles++;
+
+        // Return the number of tiles
+        return tiles;
+    }
+
+    /**
+     * Get the number of sides that can connect.
+     *
+     * @return Number of sides that can connect.
+     */
+    public int getSideCanConnectNeighbourCount() {
+        // Count the tiles
+        int tiles = 0;
+
+        // Loop through all the sides
+        for(LoopTileSide side : LoopTileSide.values())
+            if(getSideCanConnectNeighbour(side))
+                tiles++;
+
+        // Return the number of tiles
+        return tiles;
+    }
+
+    /**
+     * Get the number of sides that can't connect.
+     *
+     * @return Number of sides that can't connect.
+     */
+    public int getSideCanNotConnectNeighbourCount() {
+        // Count the tiles
+        int tiles = 0;
+
+        // Loop through all the sides
+        for(LoopTileSide side : LoopTileSide.values())
+            if(getSideCanNotConnectNeighbour(side))
+                tiles++;
+
+        // Return the number of tiles
+        return tiles;
+    }
+
+    public boolean isCorrect() {
+        // Loop through all sides and check if they're correct
+        for(LoopTileSide side : LoopTileSide.values())
+            if(!isSideCorrect(side))
+                return false;
+
+        // All sides are correct
+        return true;
+    }
+
+    public boolean isSideCorrect(LoopTileSide side) {
+        return (getSide(side) && getSideMustConnectNeighbour(side)) || (!getSide(side) && getSideCanNotConnectNeighbour(side));
     }
 }
