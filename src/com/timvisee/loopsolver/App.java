@@ -46,8 +46,9 @@ public class App {
 
         // TODO: This code is currently for debugging only
         // Create the grid frame
-        createPossibleGrid();
+        //createPossibleGrid();
         //createRandomGrid();
+        createEmptyGrid();
 
         // Show an initialized message
         System.out.println(LoopSolver.APP_NAME + " initialized! Cave Johnson here.");
@@ -65,6 +66,11 @@ public class App {
         Random rand = new Random();
         this.grid = new LoopGrid(5 + rand.nextInt(8), 5 + rand.nextInt(8));
         this.grid.fillWithRandom();
+    }
+
+    public void createEmptyGrid() {
+        this.grid = new LoopGrid(16, 16);
+        this.grid.fillWithEmpty();
     }
 
     public void createPossibleGrid() {
