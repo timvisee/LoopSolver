@@ -1,5 +1,7 @@
 package com.timvisee.loopsolver.tile;
 
+import com.timvisee.loopsolver.util.MathUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -31,11 +33,31 @@ public class LoopTileDrawable extends JPanel {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Rotate the tile
-                tile.rotate(LoopTile.TILE_ROTATE_CLOCKWISE);
+                if(e.getButton() == MouseEvent.BUTTON1) {
+                    // Rotate the tile
+                    tile.rotate(LoopTile.TILE_ROTATE_CLOCKWISE);
 
-                // Repaint the tile
-                repaint();
+                    // Repaint the tile
+                    repaint();
+
+                } else if(e.getButton() == MouseEvent.BUTTON3) {
+                    // Get the current shape, and set the new one
+                    if(tile.isEmpty())
+                        tile.setSides(new boolean[]{true, false, false, false});
+                    else if(tile.isEnd())
+                        tile.setSides(new boolean[]{true, true, false, false});
+                    else if(tile.isCorner())
+                        tile.setSides(new boolean[]{true, false, true, false});
+                    else if(tile.isStraight())
+                        tile.setSides(new boolean[]{true, true, true, false});
+                    else if(tile.isTShape())
+                        tile.setSides(new boolean[]{true, true, true, true});
+                    else if(tile.isCross())
+                        tile.setSides(new boolean[]{false, false, false, false});
+
+                    // Repaint the tile
+                    repaint();
+                }
             }
 
             @Override
