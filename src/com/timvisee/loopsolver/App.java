@@ -71,7 +71,7 @@ public class App {
     }
 
     public void createEmptyGrid() {
-        this.grid = new LoopGrid(9, 12);
+        this.grid = new LoopGrid(4, 4);
         this.grid.fillWithEmpty();
     }
 

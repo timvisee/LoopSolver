@@ -249,19 +249,10 @@ public class LoopGrid {
     }
 
     public void setWorkingTile(LoopTile workingTile) {
-        // Store the current working tile
-        LoopTile oldTile = this.workingTile;
-
         // Change the working tile
         this.workingTile = workingTile;
 
-        // Update both tiles
-        LoopTileDrawable oldTileDrawable = App.instance.getGridFrame().getDrawableTile(oldTile);
-        LoopTileDrawable workingTileDrawable = App.instance.getGridFrame().getDrawableTile(workingTile);
-        if(oldTileDrawable != null) {}
-            //oldTileDrawable.repaint();
-        if(workingTileDrawable != null) {}
-            //workingTileDrawable.repaint();
+        // Repaint the frame
         App.instance.getGridFrame().repaint();
     }
 
@@ -270,19 +261,10 @@ public class LoopGrid {
     }
 
     public void setCheckingTile(LoopTile checkingTile) {
-        // Store the current checking tile
-        LoopTile oldTile = this.checkingTile;
-
         // Change the checking tile
         this.checkingTile = checkingTile;
 
-        // Update both tiles
-        LoopTileDrawable oldTileDrawable = App.instance.getGridFrame().getDrawableTile(oldTile);
-        LoopTileDrawable checkingTileDrawable = App.instance.getGridFrame().getDrawableTile(checkingTile);
-        if(oldTileDrawable != null) {}
-            //oldTileDrawable.repaint();
-        if(checkingTileDrawable != null) {}
-            //checkingTileDrawable.repaint();
+        // Repaint the frame
         App.instance.getGridFrame().repaint();
     }
 }
