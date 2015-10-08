@@ -77,8 +77,71 @@ public class LoopGrid {
      * @return The tile list position for this tile.
      */
     public int getTilePosition(int x, int y) {
-        // TODO: Make sure the position isn't out of bound!
+        // Make sure the position isn't negative
+        if(x < 0 || y < 0)
+            return -1;
+
+        // Make sure the x or y position isn't out of bound
+        if(x >= getWidth() || y >= getHeight())
+            return -1;
+
+        // Return the position
         return x + (y * this.getWidth());
+    }
+
+    /**
+     * Get the x coordinate by a position.
+     *
+     * @param position The position.
+     *
+     * @return The x coordinate.
+     */
+    public int getTilePositionX(int position) {
+        // Make sure the position is valid, return -1 if not
+        if(!isPositionInGrid(position))
+            return -1;
+
+        // Return the x coordinate
+        return position % getWidth();
+    }
+
+    /**
+     * Get the y coordinate by a position.
+     *
+     * @param position The position.
+     *
+     * @return The y coordinate.
+     */
+    public int getTilePositionY(int position) {
+        // Make sure the position is valid, return -1 if not
+        if(!isPositionInGrid(position))
+            return -1;
+
+        // Return the y coordinate
+        return position / getWidth();
+    }
+
+    /**
+     * Check whether the specified position is in the grid.
+     *
+     * @param x The x position.
+     * @param y The y position.
+     *
+     * @return True if this position is inside the grid, false if not.
+     */
+    public boolean isPositionInGrid(int x, int y) {
+        return isPositionInGrid(getTilePosition(x, y));
+    }
+
+    /**
+     * Check whether the specified position is in the grid.
+     *
+     * @param position The position.
+     *
+     * @return True if the position is in the grid, false if not.
+     */
+    public boolean isPositionInGrid(int position) {
+        return position >= 0 && position < getTotal();
     }
 
     /**
@@ -101,6 +164,11 @@ public class LoopGrid {
      * @return The tile.
      */
     public LoopTile getTile(int position) {
+        // Make sure the tile is in the grid, return null if not
+        if(!isPositionInGrid(position))
+            return null;
+
+        // Return the tile
         return this.tiles.get(position);
     }
 
@@ -121,9 +189,17 @@ public class LoopGrid {
      *
      * @param position The position.
      * @param tile The tile.
+     *
+     * @return True if a tile was changed, false if not because it wasn't in the grid.
      */
-    public void setTile(int position, LoopTile tile) {
+    public boolean setTile(int position, LoopTile tile) {
+        // Make sure the position is in the grid, return false if not
+        if(!isPositionInGrid(position))
+            return false;
+
+        // Set the tile, return the result
         this.tiles.set(position, tile);
+        return true;
     }
 
     /**
@@ -145,7 +221,7 @@ public class LoopGrid {
 
         // Fill the list with empty tiles
         for(int i = 0; i < getTotal(); i++)
-            this.tiles.add(LoopTile.createEmpty());
+            this.tiles.add(LoopTile.createEmpty(this, getTilePositionX(i), getTilePositionY(i)));
     }
 
     /**
@@ -158,6 +234,6 @@ public class LoopGrid {
 
         // Fill the list with empty tiles
         for(int i = 0; i < getTotal(); i++)
-            this.tiles.add(LoopTile.createRandom());
+            this.tiles.add(LoopTile.createRandom(this, getTilePositionX(i), getTilePositionY(i)));
     }
 }

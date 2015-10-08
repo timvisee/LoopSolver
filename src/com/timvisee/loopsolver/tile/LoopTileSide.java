@@ -50,4 +50,13 @@ public enum LoopTileSide {
         // Return null
         return null;
     }
+
+    /**
+     * Get the opposite side.
+     *
+     * @return Opposite side.
+     */
+    public LoopTileSide opposite() {
+        return bySide(this.side() + 2);
+    }
 }

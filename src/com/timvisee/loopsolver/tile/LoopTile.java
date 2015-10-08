@@ -1,8 +1,11 @@
 package com.timvisee.loopsolver.tile;
 
 import com.timvisee.loopsolver.App;
+import com.timvisee.loopsolver.grid.LoopGrid;
 import com.timvisee.loopsolver.util.MathUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class LoopTile {
@@ -23,25 +26,31 @@ public class LoopTile {
     /** True if this tile is solved, false if not. */
     private boolean solved = false;
 
+    /** The x and y coordinate of the tile in the grid. */
+    private int x, y;
+    /** The loop grid instance. */
+    private LoopGrid grid;
+
     /**
      * Constructor.
      *
      * This will create an empty tile.
      */
-    public LoopTile() {
-        this(false, false, false, false);
+    public LoopTile(LoopGrid grid, int x, int y) {
+        this(grid, x, y, false, false, false, false);
     }
 
     /**
      * Constructor.
      *
+
      * @param top True if this side is connectible, false if not.
      * @param right True if this side is connectible, false if not.
      * @param bottom True if this side is connectible, false if not.
      * @param left True if this side is connectible, false if not.
      */
-    public LoopTile(boolean top, boolean right, boolean bottom, boolean left) {
-        this(new boolean[]{top, right, bottom, left});
+    public LoopTile(LoopGrid grid, int x, int y, boolean top, boolean right, boolean bottom, boolean left) {
+        this(grid, x, y, new boolean[]{top, right, bottom, left});
     }
 
     /**
@@ -49,7 +58,10 @@ public class LoopTile {
      *
      * @param sides An array with booleans to specify what sides are connectible.
      */
-    public LoopTile(boolean[] sides) {
+    public LoopTile(LoopGrid grid, int x, int y, boolean[] sides) {
+        this.grid = grid;
+        this.x = x;
+        this.y = y;
         this.setSides(sides);
     }
 
@@ -58,8 +70,8 @@ public class LoopTile {
      *
      * @return The empty tile.
      */
-    public static LoopTile createEmpty() {
-        return new LoopTile();
+    public static LoopTile createEmpty(LoopGrid grid, int x, int y) {
+        return new LoopTile(grid, x, y);
     }
 
     /**
@@ -67,12 +79,12 @@ public class LoopTile {
      *
      * @return The random tile.
      */
-    public static LoopTile createRandom() {
+    public static LoopTile createRandom(LoopGrid grid, int x, int y) {
         // Create a random object
         Random rand = new Random();
 
         // Create and return the tile
-        return new LoopTile(rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean());
+        return new LoopTile(grid, x, y, rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean());
     }
 
     /**
@@ -322,5 +334,121 @@ public class LoopTile {
 
         // Not found, return null
         return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Get the x coordinate.
+     *
+     * @return The x coordinate.
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Get the y coordinate.
+     *
+     * @return The y coordinate.
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Get the loop grid.
+     *
+     * @return The loop grid.
+     */
+    public LoopGrid getGrid() {
+        return grid;
+    }
+
+    /**
+     * Get a tile relative to this one.
+     *
+     * @param rx Relative x position.
+     * @param ry Relative y position.
+     *
+     * @return The relative tile, or null.
+     */
+    public LoopTile getRelativeTile(int rx, int ry) {
+        return this.grid.getTile(getX() + rx, getY() + y);
+    }
+
+    /**
+     * Get a tile relative to this one, specified by a side and distance.
+     *
+     * @param side The side.
+     * @param distance The distance.
+     *
+     * @return The relative tile, or null if it's invalid.
+     */
+    public LoopTile getRelativeTile(LoopTileSide side, int distance) {
+        // Determine the relative x and y coordinates
+        int rx = 0, ry = 0;
+
+        switch(side) {
+        case TOP:
+            rx -= distance;
+            break;
+        case RIGHT:
+            ry += distance;
+            break;
+        case BOTTOM:
+            rx += distance;
+            break;
+        case LEFT:
+            ry -= distance;
+        }
+
+        // Return the relative tile
+        return getRelativeTile(rx, ry);
+    }
+
+    /**
+     * Return all tiles around this one.
+     *
+     * @return Tiles around this one.
+     */
+    public List<LoopTile> getTilesAround() {
+        // Create a list with tiles
+        List<LoopTile> tiles = new ArrayList<>();
+
+        // Add the tiles around this one
+        for(LoopTileSide side : LoopTileSide.values())
+            if(getRelativeTile(side, 1) != null)
+                tiles.add(getRelativeTile(side, 1));
+
+        // Return the tiles around this one
+        return tiles;
+    }
+
+    /**
+     * Count the empty tiles around this one. Tiles outside of the grid are also count as empty tiles.
+     *
+     * @return Number of empty tiles.
+     */
+    public int getEmptyTilesAroundCount() {
+        // Count empty tiles
+        int empty = 0;
+
+        // Loop through the tiles around this one, and check whether they're empty
+        for(LoopTileSide side : LoopTileSide.values())
+            if(getRelativeTile(side, 1) == null || getRelativeTile(side, 1).isEmpty())
+                empty++;
+
+        // Return the number of empty tiles
+        return empty;
     }
 }

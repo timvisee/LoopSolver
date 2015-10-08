@@ -73,35 +73,35 @@ public class App {
         this.grid = new LoopGrid(5, 5);
         this.grid.getTiles().clear();
 
-        this.grid.getTiles().add(new LoopTile(true, true, false, false));
-        this.grid.getTiles().add(new LoopTile(true, true, true, false));
-        this.grid.getTiles().add(new LoopTile(false, true, false, true));
-        this.grid.getTiles().add(new LoopTile(false, true, true, true));
-        this.grid.getTiles().add(new LoopTile(false, false, true, true));
+        this.grid.getTiles().add(new LoopTile(grid, 0, 0, true, true, false, false));
+        this.grid.getTiles().add(new LoopTile(grid, 1, 0, true, true, true, false));
+        this.grid.getTiles().add(new LoopTile(grid, 2, 0, false, true, false, true));
+        this.grid.getTiles().add(new LoopTile(grid, 3, 0, false, true, true, true));
+        this.grid.getTiles().add(new LoopTile(grid, 4, 0, false, false, true, true));
 
-        this.grid.getTiles().add(new LoopTile(false, true, false, false));
-        this.grid.getTiles().add(new LoopTile(true, false, true, false));
-        this.grid.getTiles().add(new LoopTile(false, false, false, false));
-        this.grid.getTiles().add(new LoopTile(true, false, true, false));
-        this.grid.getTiles().add(new LoopTile(false, false, true, false));
+        this.grid.getTiles().add(new LoopTile(grid, 0, 1, false, true, false, false));
+        this.grid.getTiles().add(new LoopTile(grid, 1, 1, true, false, true, false));
+        this.grid.getTiles().add(new LoopTile(grid, 2, 1, false, false, false, false));
+        this.grid.getTiles().add(new LoopTile(grid, 3, 1, true, false, true, false));
+        this.grid.getTiles().add(new LoopTile(grid, 4, 1, false, false, true, false));
 
-        this.grid.getTiles().add(new LoopTile(true, false, false, true));
-        this.grid.getTiles().add(new LoopTile(true, true, true, true));
-        this.grid.getTiles().add(new LoopTile(true, false, true, false));
-        this.grid.getTiles().add(new LoopTile(true, true, true, true));
-        this.grid.getTiles().add(new LoopTile(true, true, false, false));
+        this.grid.getTiles().add(new LoopTile(grid, 0, 2, true, false, false, true));
+        this.grid.getTiles().add(new LoopTile(grid, 1, 2, true, true, true, true));
+        this.grid.getTiles().add(new LoopTile(grid, 2, 2, true, false, true, false));
+        this.grid.getTiles().add(new LoopTile(grid, 3, 2, true, true, true, true));
+        this.grid.getTiles().add(new LoopTile(grid, 4, 2, true, true, false, false));
 
-        this.grid.getTiles().add(new LoopTile(false, true, false, false));
-        this.grid.getTiles().add(new LoopTile(true, false, true, true));
-        this.grid.getTiles().add(new LoopTile(false, true, false, true));
-        this.grid.getTiles().add(new LoopTile(true, true, false, true));
-        this.grid.getTiles().add(new LoopTile(false, false, false, true));
+        this.grid.getTiles().add(new LoopTile(grid, 0, 3, false, true, false, false));
+        this.grid.getTiles().add(new LoopTile(grid, 1, 3, true, false, true, true));
+        this.grid.getTiles().add(new LoopTile(grid, 2, 3, false, true, false, true));
+        this.grid.getTiles().add(new LoopTile(grid, 3, 3, true, true, false, true));
+        this.grid.getTiles().add(new LoopTile(grid, 4, 3, false, false, false, true));
 
-        this.grid.getTiles().add(new LoopTile(true, false, false, false));
-        this.grid.getTiles().add(new LoopTile(true, false, true, true));
-        this.grid.getTiles().add(new LoopTile(false, true, false, true));
-        this.grid.getTiles().add(new LoopTile(true, true, true, false));
-        this.grid.getTiles().add(new LoopTile(false, true, false, false));
+        this.grid.getTiles().add(new LoopTile(grid, 0, 4, true, false, false, false));
+        this.grid.getTiles().add(new LoopTile(grid, 1, 4, true, false, true, true));
+        this.grid.getTiles().add(new LoopTile(grid, 2, 4, false, true, false, true));
+        this.grid.getTiles().add(new LoopTile(grid, 3, 4, true, true, true, false));
+        this.grid.getTiles().add(new LoopTile(grid, 4, 4, false, true, false, false));
     }
 
     /**
