@@ -2,7 +2,6 @@ package com.timvisee.loopsolver.grid;
 
 import com.timvisee.loopsolver.App;
 import com.timvisee.loopsolver.tile.LoopTile;
-import com.timvisee.loopsolver.tile.LoopTileDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -244,10 +243,20 @@ public class LoopGrid {
             this.tiles.add(LoopTile.createRandom(this, getTilePositionX(i), getTilePositionY(i)));
     }
 
+    /**
+     * Get the tile that is currently worked on.
+     *
+     * @return Current working tile.
+     */
     public LoopTile getWorkingTile() {
         return workingTile;
     }
 
+    /**
+     * Set the tile that is currently worked on.
+     *
+     * @param workingTile Working tile.
+     */
     public void setWorkingTile(LoopTile workingTile) {
         // Change the working tile
         this.workingTile = workingTile;
@@ -256,10 +265,20 @@ public class LoopGrid {
         App.instance.getGridFrame().repaint();
     }
 
+    /**
+     * Get the tile that is currently being checked.
+     *
+     * @return Current checking tile.
+     */
     public LoopTile getCheckingTile() {
         return checkingTile;
     }
 
+    /**
+     * Set the tile that is currently being checked.
+     *
+     * @param checkingTile Checking tile.
+     */
     public void setCheckingTile(LoopTile checkingTile) {
         // Change the checking tile
         this.checkingTile = checkingTile;
