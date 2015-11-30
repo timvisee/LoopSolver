@@ -75,6 +75,7 @@ public class App {
         this.grid.fillWithEmpty();
     }
 
+    @SuppressWarnings("PointlessArithmeticExpression")
     public void createPossibleGrid() {
         // Puzzle 80
 
