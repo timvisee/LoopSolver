@@ -59,22 +59,36 @@ public class App {
         this.gridFrame = new GridFrame(grid);
     }
 
+    /**
+     * Solve the current grid.
+     * This method starts the solver runnable in a new thread.
+     */
     public void solve() {
         Thread t = new Thread(new Solver(this.grid));
         t.start();
     }
 
+    /**
+     * Create a new random grid.
+     * The size of the grid is random, between 8 and 12 units width and/or height.
+     */
     public void createRandomGrid() {
         Random rand = new Random();
         this.grid = new LoopGrid(5 + rand.nextInt(8), 5 + rand.nextInt(8));
         this.grid.fillWithRandom();
     }
 
+    /**
+     * Create an empty grid, with the size of 4 by 4 units.
+     */
     public void createEmptyGrid() {
         this.grid = new LoopGrid(4, 4);
         this.grid.fillWithEmpty();
     }
 
+    /**
+     * Create a grid for one of the Loop puzzles.
+     */
     @SuppressWarnings("PointlessArithmeticExpression")
     public void createPossibleGrid() {
         // Puzzle 80
@@ -157,6 +171,11 @@ public class App {
         this.drawableGrid = drawableGrid;
     }
 
+    /**
+     * Get the grid frame instance.
+     *
+     * @return Grid frame.
+     */
     public GridFrame getGridFrame() {
         return gridFrame;
     }
