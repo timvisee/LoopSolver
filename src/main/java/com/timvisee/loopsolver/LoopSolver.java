@@ -19,6 +19,6 @@ public class LoopSolver {
         System.out.println(APP_NAME + " v" + APP_VERSION_NAME + " (" + APP_VERSION_CODE + ")");
 
         // Start the app
-        App app = new App(true);
+        new App(true);
     }
 }
